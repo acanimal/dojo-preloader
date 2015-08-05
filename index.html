@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html dir="ltr">
+    <head>
+        <title>Dojo Preloader</title>
+		<meta name="author" content="Antonio Santiago <asantiagop(at)gmail(dot)com>">
+		<meta name="description" content="Sample on how to create a preloader using Dojo">
+        
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojo/dojo.xd.js"
+			djConfig="parseOnLoad: false, isDebug: false, locale: 'en-us'"></script>
+		<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/claro/claro.css"/>
+        
+		<style type="text/css">
+			body, html { width:100%; height:100%; margin:0; padding:0; overflow:hidden; }
+			#content { width:100%; height:100% }
+			#preloader {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%; 
+				height: 100%; 
+				margin:0; 
+				padding:0;
+				background:#aaa;				
+				z-index:999;
+			}
+			#preloaderContent {
+				position: absolute;
+				border: 2px solid #fff;
+				color: #fff;
+				padding: 25px;
+				-moz-border-radius: 15px;
+				border-radius: 15px;
+			}
+		</style>
+        <script type="text/javascript">        
+			dojo.require("dojo.parser");
+			
+            dojo.require("dijit.form.Form");
+            dojo.require("dijit.form.ValidationTextBox");
+            dojo.require("dijit.form.Button");
+
+            dojo.require("dijit.layout.ContentPane");
+            dojo.require("dijit.layout.BorderContainer");
+			dojo.require("dijit.layout.AccordionContainer");
+			dojo.require("dijit.layout.AccordionPane");
+			dojo.require("dijit.layout.TabContainer");
+            
+            var hidePreloader = function(){
+				// This really hides the preloader
+				var hide = function(){
+					dojo.fadeOut({
+							node:"preloader",
+							duration:700,
+							onEnd: function(){								
+								dojo.style("preloader", "display", "none");	
+							}
+					}).play();
+				};
+			
+				// Set a timeout to ensure the preloader is visible.
+				// This is only for testing !!!
+				setTimeout(hide, 5000);
+        	}; 
+        	
+			function showPreloader() {
+				// Show the preloader centered in the viewport		
+				var ps = dojo.position('preloaderContent');
+				var ws = dojo.window.getBox();
+				dojo.style("preloaderContent", "top" , (ws.h/2-ps.h/2)+"px");
+				dojo.style("preloaderContent", "left", (ws.w/2-ps.w/2)+"px");
+				dojo.style("preloaderContent", "visibility" , "visible");
+			};
+			
+        	dojo.addOnLoad(function(){	
+				showPreloader();				
+				dojo.parser.parse();
+                hidePreloader();                
+        	});
+        </script>
+        
+    </head>
+    <body class="claro">
+		<div id="preloader">
+			<div id="preloaderContent" style="visibility: hidden;">
+				<strong>This is your preloader... </strong>
+				<img width="20px" height="20px" src="http://ajax.googleapis.com/ajax/libs/dojo/1.5/dojox/image/resources/images/loading.gif"><br>
+				Put someting nice here !!!
+			</div>
+		</div>
+
+		<div dojoType="dijit.layout.BorderContainer" gutters="true" id="content">
+			<div dojoType="dijit.layout.ContentPane" region="top" splitter="false" style="background-color: #142A38; color: white;">
+				<img src="http://www.dojotoolkit.org/images/logo.png"><br>
+				This sample uses a BorderContainer. Usually you would like to put a logo or title here.
+			</div>
+			<div dojoType="dijit.layout.BorderContainer" liveSplitters="false" design="sidebar" region="center" id="mainSplit">
+				<div dojoType="dijit.layout.AccordionContainer" minSize="20" style="width: 300px;" id="leftAccordion" region="leading" splitter="true">
+					<div dojoType="dijit.layout.AccordionPane" title="Pane One"></div>
+					<div dojoType="dijit.layout.AccordionPane" title="Pane Two"></div>
+					<div dojoType="dijit.layout.AccordionPane" title="Pane Three" selected="true"></div>
+					<div dojoType="dijit.layout.AccordionPane" title="Pane Four"></div>
+				</div>
+				
+				<div dojoType="dijit.layout.TabContainer" region="center" tabStrip="true">
+					<div dojoType="dijit.layout.ContentPane" title="First tab" selected="true">
+						Lorem ipsum and all around...
+					</div>
+					<div dojoType="dijit.layout.ContentPane" title="Second tab">
+						Lorem ipsum and all around - second...
+					</div>
+					<div dojoType="dijit.layout.ContentPane" title="Third tab" closable="true">
+						Lorem ipsum and all around - last...
+					</div>
+				</div>
+			</div>
+		</div>
+		
+    </body>
+</html>
